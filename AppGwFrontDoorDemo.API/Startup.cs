@@ -34,8 +34,8 @@ namespace AppGwFrontDoorDemo.API
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "AppGwFrontDoorDemo.API", Version = "v1" });
       });
 
-      services.AddSingleton<IDataAccess, SqlDataAccess>();
-      services.AddSingleton<ColorDataAccess>();
+      services.AddScoped<IDataAccess, SqlDataAccess>();
+      services.AddScoped<ColorDataAccess>();
 
     }
 
