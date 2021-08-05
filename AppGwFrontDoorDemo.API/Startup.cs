@@ -49,7 +49,8 @@ namespace AppGwFrontDoorDemo.API
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AppGwFrontDoorDemo.API v1"));
       }
 
-      app.UseHttpsRedirection();
+      // Do not use HTTPS redirection, to show how App Gateway can do SSL offload
+      //app.UseHttpsRedirection();
 
       app.UseRouting();
 
