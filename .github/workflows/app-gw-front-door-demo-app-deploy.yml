@@ -44,7 +44,7 @@ jobs:
         app-name: app-gw-front-door-demo-jaspecla
         app-settings-json: >-
           [
-          {"name": "ConnectionString", "value": "${{ secrets.DB_CONNECTION_STRING }}", "slotSetting": false}
+          {"name": "ConnectionString", "value": '${{ secrets.DB_CONNECTION_STRING }}', "slotSetting": false}
           ]
       id: settings
 
