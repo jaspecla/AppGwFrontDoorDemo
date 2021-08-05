@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Azure.Core;
+using Azure.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
@@ -21,9 +23,20 @@ namespace AppGwFrontDoorDemo.API.Data
 
     protected async Task<SqlConnection> GetConnectionAsync()
     {
-      SqlConnection connection = new SqlConnection(this.ConnectionString);
-      if (connection.State != ConnectionState.Open)
+      SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(this.ConnectionString);
+      SqlConnection connection = new SqlConnection(builder.ToString());
+
+      if (connection.State != ConnectionState.Open) {
+        if (!builder.IntegratedSecurity)
+        {
+          // Authenticate with managed identity
+          var credential = new DefaultAzureCredential();
+          var token = await credential.GetTokenAsync(new TokenRequestContext(new[] { "https://database.windows.net//.default" }));
+          connection.AccessToken = token.Token;
+        }
+
         await connection.OpenAsync();
+      }
       return connection;
     }
 

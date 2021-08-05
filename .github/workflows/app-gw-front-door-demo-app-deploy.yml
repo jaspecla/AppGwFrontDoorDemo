@@ -1,0 +1,50 @@
+name: "App Gateway Front Door Demo API Deployment"
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    steps:
+
+    # checkout the repo
+    - uses: actions/checkout@master
+    
+    # authenticate to Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.302 # Replace with specific dotnet core version
+
+    
+    # dotnet build, test, and publish
+    - name: dotnet build
+      run: dotnet build --configuration Release
+    - name: dotnet test
+      run: dotnet test --configuration Release
+    - name: dotnet publish
+      run: |
+        dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/appgwapi 
+
+    - name: 'Run Azure webapp deploy action'
+      uses: azure/webapps-deploy@v1
+      with: 
+        app-name: app-gw-front-door-demo-jaspecla 
+        package: ${{env.DOTNET_ROOT}}/appgwapi
+
+    - name: "Set Web App Service Settings"
+      uses: azure/appservice-settings@v1
+      with:
+        app-name: app-gw-front-door-demo-jaspecla
+        app-settings-json: >-
+          [
+          {"name": "ConnectionString", "value": "${{ secrets.DB_CONNECTION_STRING }}", "slotSetting": false}
+          ]
+      id: settings
+

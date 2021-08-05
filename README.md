@@ -1,6 +1,6 @@
 # App Gateway Front Door Demo
 
-* WARNING!  PURPOSELY BUGGY CODE!  FOR DEMO PURPOSES ONLY *
+## WARNING!  PURPOSELY BUGGY CODE!  FOR DEMO PURPOSES ONLY!
 
 This project is part of a demo of Azure Application Gateway and Azure Front Door.
 
