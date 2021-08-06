@@ -30,6 +30,8 @@ namespace AppGwFrontDoorDemo.API.Data
         colors.Add(color);
       }
 
+      await reader.CloseAsync();
+
       return colors;
 
     }
