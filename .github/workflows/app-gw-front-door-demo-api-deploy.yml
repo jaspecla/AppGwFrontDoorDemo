@@ -10,7 +10,7 @@ on:
 jobs:
   build-and-deploy:
     env:
-      PROJECT_PATH: './AppGwFrontDoorDemo.Images/AppGwFrontDoorDemo.API.csproj'
+      PROJECT_PATH: './AppGwFrontDoorDemo.API/AppGwFrontDoorDemo.API.csproj'
       WEB_APP: app-gw-front-door-demo-jaspecla
     runs-on: self-hosted
     steps:
