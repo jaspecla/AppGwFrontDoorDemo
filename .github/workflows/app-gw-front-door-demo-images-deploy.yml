@@ -2,7 +2,7 @@ name: "App Gateway Front Door Demo Images Deployment"
 on:
   push:
     paths:
-      - 'AppGwFrontDoorDemo.Images'
+      - 'AppGwFrontDoorDemo.Images/**'
       - '.github/workflows/app-gw-front-door-demo-images-deploy.yml'
     branches: 
       - main
