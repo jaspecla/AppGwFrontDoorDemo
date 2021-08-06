@@ -21,16 +21,6 @@ namespace AppGwFrontDoorDemo.API.Data
       this.ConnectionString = configuration["ConnectionString"];
     }
 
-    protected async Task<SqlConnection> GetConnectionAsync()
-    {
-      SqlConnection connection = new SqlConnection(this.ConnectionString);
-
-      if (connection.State != ConnectionState.Open) {
-        await connection.OpenAsync();
-      }
-      return connection;
-    }
-
     public DbCommand GetCommand(DbConnection connection, string commandText, CommandType commandType)
     {
       SqlCommand command = new SqlCommand(commandText, connection as SqlConnection);
@@ -69,8 +59,10 @@ namespace AppGwFrontDoorDemo.API.Data
 
       try
       {
-        using (SqlConnection connection = await this.GetConnectionAsync())
+        using (SqlConnection connection = new SqlConnection(this.ConnectionString))
         {
+          await connection.OpenAsync();
+
           DbCommand cmd = this.GetCommand(connection, procedureName, commandType);
 
           if (parameters != null && parameters.Count > 0)
@@ -96,8 +88,10 @@ namespace AppGwFrontDoorDemo.API.Data
 
       try
       {
-        using (DbConnection connection = await this.GetConnectionAsync())
+        using (DbConnection connection = new SqlConnection(this.ConnectionString))
         {
+          await connection.OpenAsync();
+
           DbCommand cmd = this.GetCommand(connection, procedureName, CommandType.StoredProcedure);
 
           if (parameters != null && parameters.Count > 0)
